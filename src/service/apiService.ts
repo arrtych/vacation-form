@@ -8,6 +8,7 @@ export const fetchVacationRequests = async (): Promise<VacationRequest[]> => {
     const response = await axios.get<VacationRequest[]>(API_BASE_URL);
     // const response = await fetch(API_BASE_URL);
     // const data = await response.json();
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.error("Error fetching vacation requests:", error);

@@ -47,7 +47,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   };
 
   useEffect(() => {
-    fetchRequests();
+    // fetchRequests();
   }, []);
 
   return (
