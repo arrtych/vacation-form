@@ -3,7 +3,7 @@ export interface VacationRequest {
   id: number;
   startDate: string;
   endDate: string;
-  reason: string;
+  reason?: string;
 }
 
 export interface VacationFormData {

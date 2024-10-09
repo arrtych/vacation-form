@@ -1,11 +1,12 @@
-// src/pages/FormPage.tsx
+import { Box } from "@mui/material";
 import React from "react";
+import VacationRequestForm from "../components/VacationRequestForm/VacationRequestForm";
 
 const FormPage: React.FC = () => {
   return (
-    <div>
-      <h2>form page</h2>
-    </div>
+    <Box>
+      <VacationRequestForm />
+    </Box>
   );
 };
 

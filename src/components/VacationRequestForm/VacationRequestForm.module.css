@@ -1,0 +1,12 @@
+.title {
+  color: red;
+}
+
+.formBox {
+  display: flex;
+  justify-content: center;
+}
+
+.formButton {
+  float: right;
+}
