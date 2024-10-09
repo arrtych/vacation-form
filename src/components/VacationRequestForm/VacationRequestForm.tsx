@@ -7,6 +7,8 @@ import { VacationContext } from "../../context/VacationContext";
 import CustomDatePicker from "../CustomDatePicker";
 import styles from "./VacationRequestForm.module.css";
 import NumberInput from "../NumberInput";
+import dayjs from "dayjs";
+import CustomCalendar from "../CustomCalendar";
 
 const VacationRequestForm: React.FC = () => {
   // const { addVacationRequest } = useVacationContext();
@@ -31,7 +33,8 @@ const VacationRequestForm: React.FC = () => {
     const newValue = e.target.value;
     setReason(newValue);
   };
-
+  const startDateJs = dayjs("2024-09-30");
+  const endDateJs = dayjs("2024-10-12"); //todo: ui bug between two mounts;may be add multiple calendar components.
   return (
     <Box className={styles.formBox}>
       <form onSubmit={handleSubmit}>
@@ -64,6 +67,10 @@ const VacationRequestForm: React.FC = () => {
             >
               Submit Request
             </Button>
+          </Grid>
+
+          <Grid size={12}>
+            <CustomCalendar startDate={startDateJs} endDate={endDateJs} />
           </Grid>
         </Grid>
       </form>
