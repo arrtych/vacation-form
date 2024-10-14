@@ -7,7 +7,7 @@ interface TotalDaysProps {
 const TotalDays: React.FC<TotalDaysProps> = (props: TotalDaysProps) => {
   return (
     <div>
-      <p>Total vacation days:{props.amount}</p>
+      <p>Available vacation days: {props.amount}</p>
     </div>
   );
 };

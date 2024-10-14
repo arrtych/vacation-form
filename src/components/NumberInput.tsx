@@ -22,7 +22,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
     <TextField
       label={label}
       type="number"
-      value={props.value}
+      value={value} //todo: change with props
       onChange={handleChange}
       variant="outlined"
       fullWidth

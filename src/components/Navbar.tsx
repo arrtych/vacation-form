@@ -2,12 +2,21 @@
 import React from "react";
 import { AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import EventIcon from "@mui/icons-material/Event";
 
 const Navbar: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" style={{ flexGrow: 1 }}>
+        <Typography
+          variant="h6"
+          style={{
+            flexGrow: "1",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <EventIcon />
           Vacation App
         </Typography>
         <Button color="inherit" component={Link} to="/">

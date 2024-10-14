@@ -4,9 +4,9 @@ import VacationRequestForm from "../components/VacationRequestForm/VacationReque
 
 const FormPage: React.FC = () => {
   return (
-    <Box>
-      <VacationRequestForm />
-    </Box>
+    // <Box>
+    <VacationRequestForm />
+    // </Box>
   );
 };
 

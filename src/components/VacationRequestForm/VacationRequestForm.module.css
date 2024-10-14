@@ -1,12 +1,27 @@
 .title {
-  color: red;
+  color: black;
+  text-align: center;
 }
 
-.formBox {
+.form {
   display: flex;
   justify-content: center;
+  border: 1px solid black;
+  /* max-width: 900px; */
 }
 
-.formButton {
-  float: right;
+.container {
+  border: 1px solid yellow;
+  width: 900px;
+  padding: 1em;
 }
+
+.formButtons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+/* .dateRangeGrid {
+  gap: 5px;
+} */

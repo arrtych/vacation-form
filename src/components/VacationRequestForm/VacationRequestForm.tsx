@@ -11,6 +11,7 @@ import dayjs from "dayjs";
 import CustomCalendar from "../CustomCalendar";
 import VacationRange from "../VacationRange/VacationRange";
 import TotalDays from "../TotalDays/TotalDays";
+import HomeButton from "../HomeButton";
 
 //todo: rename component name
 const VacationRequestForm: React.FC = () => {
@@ -39,50 +40,55 @@ const VacationRequestForm: React.FC = () => {
   const startDateJs = dayjs("2024-09-28");
   const endDateJs = dayjs("2024-10-12"); //may be add multiple calendar components.
   return (
-    <Box className={styles.formBox}>
-      <form onSubmit={handleSubmit}>
-        <h2 className={styles.title}>Form page</h2>
-        <Grid container spacing={2}>
-          <Grid size={12}>
-            <NumberInput label={"Vacation Days"} value={0} /> of{" "}
-            <TotalDays amount={10} />
-          </Grid>
-          <Grid size={12}>
-            <CustomDatePicker label="Start Date" />
-          </Grid>
-          <Grid size={12}>
-            <CustomDatePicker label="End Date" />
-          </Grid>
-          <Grid size={12}>
-            <TextField
-              id="textfield-reason"
-              label="Reason"
-              variant="outlined"
-              value={reason}
-              onChange={handleReasonChange}
-            />
-          </Grid>
-          <Grid size={12}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={styles.formButton}
-            >
-              Submit Request
-            </Button>
-          </Grid>
-
-          <Grid size={12}>
-            <CustomCalendar startDate={startDateJs} endDate={endDateJs} />
-          </Grid>
-
-          <Grid size={12}>
-            <VacationRange startDate={startDateJs} endDate={endDateJs} />
-          </Grid>
+    <form onSubmit={handleSubmit} className={styles.form}>
+      <Grid container rowSpacing={1} className={styles.container}>
+        <Grid size={12} className={styles.title}>
+          <h2>Vacation form</h2>
         </Grid>
-      </form>
-    </Box>
+
+        <Grid size={12}>
+          <TotalDays amount={10} />
+        </Grid>
+
+        <Grid size={12}>
+          <NumberInput label={"Vacation Days"} value={0} />
+        </Grid>
+
+        <Grid size={12}>
+          <CustomDatePicker label="Start Date" />
+        </Grid>
+
+        <Grid size={12}>
+          <CustomDatePicker label="End Date" />
+        </Grid>
+
+        <Grid size={12}>
+          <TextField
+            id="textfield-reason"
+            label="Reason"
+            variant="outlined"
+            value={reason}
+            fullWidth
+            onChange={handleReasonChange}
+          />
+        </Grid>
+
+        <Grid size={12}>
+          <CustomCalendar startDate={startDateJs} endDate={endDateJs} />
+        </Grid>
+
+        <Grid size={12}>
+          <VacationRange startDate={startDateJs} endDate={endDateJs} />
+        </Grid>
+
+        <Grid size={12} className={styles.formButtons}>
+          <HomeButton />
+          <Button type="submit" variant="contained" color="primary">
+            Submit Form
+          </Button>
+        </Grid>
+      </Grid>
+    </form>
   );
 };
 
