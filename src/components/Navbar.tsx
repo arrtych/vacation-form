@@ -19,6 +19,7 @@ const Navbar: React.FC = () => {
           <EventIcon />
           Vacation App
         </Typography>
+
         <Button color="inherit" component={Link} to="/">
           Home
         </Button>

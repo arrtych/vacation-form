@@ -1,7 +1,7 @@
 import axios from "axios";
 import { VacationRequest, VacationFormData } from "../types/types";
 
-const API_BASE_URL = "http://localhost:3000/vacation_requests/";
+const API_BASE_URL = "http://localhost:8080/vacation_requests/";
 
 export const fetchVacationRequests = async (): Promise<VacationRequest[]> => {
   try {
@@ -16,19 +16,39 @@ export const fetchVacationRequests = async (): Promise<VacationRequest[]> => {
   }
 };
 
+// export const addVacationRequest = async (
+//   formData: VacationFormData
+// ): Promise<VacationRequest> => {
+//   try {
+//     const response = await axios.post<VacationRequest>(API_BASE_URL, formData);
+//     // const response = await fetch(API_BASE_URL, {
+//     //   method: 'POST',
+//     //   headers: {
+//     //     'Content-Type': 'application/json',
+//     //   },
+//     //   body: JSON.stringify(formData),
+//     // });
+//     // const data = await response.json();
+//     return response.data;
+//   } catch (error) {
+//     console.error("Error adding vacation request:", error);
+//     throw error;
+//   }
+// };
+
 export const addVacationRequest = async (
   formData: VacationFormData
 ): Promise<VacationRequest> => {
   try {
-    const response = await axios.post<VacationRequest>(API_BASE_URL, formData);
-    // const response = await fetch(API_BASE_URL, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify(formData),
-    // });
-    // const data = await response.json();
+    const formattedFormData = {
+      ...formData,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+    };
+    const response = await axios.post<VacationRequest>(
+      API_BASE_URL,
+      formattedFormData
+    );
     return response.data;
   } catch (error) {
     console.error("Error adding vacation request:", error);

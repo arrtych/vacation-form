@@ -4,6 +4,7 @@ import {
   fetchVacationRequests,
 } from "../service/apiService";
 import { VacationFormData, VacationRequest } from "../types/types";
+import { formatStringToDayjs } from "../utils/utils";
 
 interface VacationContextProps {
   vacationRequests: VacationRequest[];
@@ -37,7 +38,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   };
 
   // Add a new vacation request via the API
-  const addRequest = async (formData: any) => {
+  const addRequest = async (formData: VacationFormData) => {
     try {
       const newRequest = await addVacationRequest(formData);
       setVacationRequests([...vacationRequests, newRequest]);
@@ -47,7 +48,14 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   };
 
   useEffect(() => {
-    // fetchRequests();
+    // const formData: VacationFormData = {
+    //   id: 0,
+    //   startDate: formatStringToDayjs("12/10/2024"),
+    //   endDate: formatStringToDayjs("14/10/2024"),
+    //   reason: "some",
+    // };
+    // addRequest(formData);
+    fetchRequests();
   }, []);
 
   return (

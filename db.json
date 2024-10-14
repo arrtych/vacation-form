@@ -1,0 +1,16 @@
+{
+  "vacation_requests": [
+    {
+      "id": 1,
+      "startDate": "12/10/2024",
+      "endDate": "14/10/2024",
+      "reason": "Vacation"
+    },
+    {
+      "id": 2,
+      "startDate": "20/11/2024",
+      "endDate": "22/11/2024",
+      "reason": "Holiday"
+    }
+  ]
+}

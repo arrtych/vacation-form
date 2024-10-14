@@ -4,18 +4,14 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
 const HomeButton: React.FC = () => {
-  const navigate = useNavigate(); // Hook for navigation
+  const navigate = useNavigate();
 
   const handleNavigateHome = () => {
-    navigate("/"); // Navigate to the home page
+    navigate("/");
   };
 
   return (
-    <Button
-      variant="contained"
-      color="primary"
-      onClick={handleNavigateHome} // Attach the navigation to button click
-    >
+    <Button variant="contained" color="primary" onClick={handleNavigateHome}>
       Go to Home
     </Button>
   );
