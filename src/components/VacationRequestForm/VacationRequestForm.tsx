@@ -9,7 +9,10 @@ import styles from "./VacationRequestForm.module.css";
 import NumberInput from "../NumberInput";
 import dayjs from "dayjs";
 import CustomCalendar from "../CustomCalendar";
+import VacationRange from "../VacationRange/VacationRange";
+import TotalDays from "../TotalDays/TotalDays";
 
+//todo: rename component name
 const VacationRequestForm: React.FC = () => {
   // const { addVacationRequest } = useVacationContext();
   const [startDate, setStartDate] = useState<Date | null>(null);
@@ -33,15 +36,16 @@ const VacationRequestForm: React.FC = () => {
     const newValue = e.target.value;
     setReason(newValue);
   };
-  const startDateJs = dayjs("2024-09-30");
-  const endDateJs = dayjs("2024-10-12"); //todo: ui bug between two mounts;may be add multiple calendar components.
+  const startDateJs = dayjs("2024-09-28");
+  const endDateJs = dayjs("2024-10-12"); //may be add multiple calendar components.
   return (
     <Box className={styles.formBox}>
       <form onSubmit={handleSubmit}>
         <h2 className={styles.title}>Form page</h2>
         <Grid container spacing={2}>
           <Grid size={12}>
-            <NumberInput label={"Vacation Days"} />
+            <NumberInput label={"Vacation Days"} value={0} /> of{" "}
+            <TotalDays amount={10} />
           </Grid>
           <Grid size={12}>
             <CustomDatePicker label="Start Date" />
@@ -71,6 +75,10 @@ const VacationRequestForm: React.FC = () => {
 
           <Grid size={12}>
             <CustomCalendar startDate={startDateJs} endDate={endDateJs} />
+          </Grid>
+
+          <Grid size={12}>
+            <VacationRange startDate={startDateJs} endDate={endDateJs} />
           </Grid>
         </Grid>
       </form>

@@ -1,4 +1,3 @@
-// src/types.ts
 export interface VacationRequest {
   id: number;
   startDate: string;

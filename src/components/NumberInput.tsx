@@ -4,6 +4,7 @@ import { TextField, Box } from "@mui/material";
 
 interface NumberInputProps {
   label: string;
+  value: number;
 }
 
 const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
@@ -21,7 +22,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
     <TextField
       label={label}
       type="number"
-      value={value}
+      value={props.value}
       onChange={handleChange}
       variant="outlined"
       fullWidth

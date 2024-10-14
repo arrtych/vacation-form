@@ -4,11 +4,12 @@ import isBetween from "dayjs/plugin/isBetween";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import CustomDay from "./CustomDay";
+import CustomDay from "./CustomDay/CustomDay";
 
-dayjs.extend(isBetween);
+// dayjs.extend(isBetween);
 
 interface CustomCalendarProps {
+  //todo: may be same props for VacationRange
   startDate: Dayjs;
   endDate: Dayjs;
 }
@@ -18,7 +19,6 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
   endDate,
 }) => {
   const [value, setValue] = useState<Dayjs>(startDate);
-
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
