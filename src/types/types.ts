@@ -19,3 +19,9 @@ export interface userData {
   vacations: VacationRequest[];
   availableDaysAmount: number;
 }
+
+export interface User {
+  id: number;
+  name: string;
+  availableVacationDays: number;
+}

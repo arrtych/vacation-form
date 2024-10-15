@@ -5,7 +5,7 @@ import VacationApp from "./components/VacationApp";
 
 function App() {
   return (
-    <VacationContextProvider>
+    <VacationContextProvider userId={1}>
       <VacationApp />
     </VacationContextProvider>
   );
