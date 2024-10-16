@@ -6,24 +6,23 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 import CustomDay from "./CustomDay/CustomDay";
 
-// dayjs.extend(isBetween);
-
 interface CustomCalendarProps {
-  //todo: may be same props for VacationRange
-  startDate: Dayjs;
-  endDate: Dayjs;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
 }
 
 const CustomCalendar: React.FC<CustomCalendarProps> = ({
   startDate,
   endDate,
 }) => {
-  const [value, setValue] = useState<Dayjs>(startDate);
+  // Provide a default value for startDate if it is null
+  const [value, setValue] = useState<Dayjs>(startDate || dayjs());
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar
         value={value}
         onChange={(newValue) => setValue(newValue as Dayjs)}
+        readOnly
         slots={{
           day: (dayProps) => (
             <CustomDay {...dayProps} startDate={startDate} endDate={endDate} />

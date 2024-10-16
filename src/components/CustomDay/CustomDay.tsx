@@ -4,14 +4,17 @@ import { PickersDay, PickersDayProps } from "@mui/x-date-pickers/PickersDay";
 import { Dayjs } from "dayjs";
 
 interface CustomDayProps extends PickersDayProps<Dayjs> {
-  startDate: Dayjs;
-  endDate: Dayjs;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
 }
 
 const CustomDay: React.FC<CustomDayProps> = (props) => {
   const { day, startDate, endDate, ...other } = props;
 
-  const isInRange = day.isBetween(startDate, endDate, "day", "[]");
+  //if startDate && endDate defined
+  const dateSet = startDate && endDate;
+  const isInRange = dateSet && day.isBetween(startDate, endDate, "day", "[]");
+
   const isStart = day.isSame(startDate, "day");
   const isEnd = day.isSame(endDate, "day");
 

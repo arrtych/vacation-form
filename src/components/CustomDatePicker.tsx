@@ -4,31 +4,34 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { DialogProps } from "@mui/material/Dialog";
+import { Dayjs } from "dayjs";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { enGB } from "date-fns/locale";
 
 interface CustomDatePickerProps {
   label: string;
+  value: Dayjs | null;
+  onChange: (date: Dayjs | null) => void;
 }
 
 const CustomDatePicker: React.FC<CustomDatePickerProps> = (
   props: CustomDatePickerProps
 ) => {
-  const { label } = { ...props };
-  // const dialogProps: DialogProps = {
-  //   sx: {
-  //     "& .MuiPaper-root": {
-  //       width: "100%", // Ensure the modal takes full width of its parent
-  //       maxWidth: "none", // Remove the default max-width constraint
-  //     },
-  //   },
-  // };
+  const { label, value, onChange } = { ...props };
 
   return (
-    <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
       <DemoContainer components={["DatePicker"]}>
         <DatePicker
           label={label}
+          value={value}
+          // slotProps={{
+          //   textField: {
+          //     helperText: "MM/DD/YYYY",
+          //   },
+          // }}
+          onChange={onChange}
           sx={{
-            // width: "61%",
             width: "100%",
           }}
         />

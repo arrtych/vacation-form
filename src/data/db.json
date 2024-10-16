@@ -3,7 +3,7 @@
     {
       "id": 1,
       "name": "John Doe",
-      "availableVacationDays": null
+      "availableVacationDays": 28
     }
   ],
   "vacation_requests": [

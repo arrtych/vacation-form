@@ -3,8 +3,8 @@ import React from "react";
 import { formatDayjsToString } from "../../utils/utils";
 
 interface VacationRangeProps {
-  startDate: Dayjs;
-  endDate: Dayjs;
+  startDate: Dayjs | null;
+  endDate: Dayjs | null;
 }
 //todo: rename component name
 const VacationRange: React.FC<VacationRangeProps> = (
@@ -13,8 +13,9 @@ const VacationRange: React.FC<VacationRangeProps> = (
   const { startDate, endDate } = { ...props };
   return (
     <div>
-      <p>Vacation start: {formatDayjsToString(startDate)}</p>
-      <p>Vacation end: {formatDayjsToString(endDate)} </p>
+      {/* todo: check formatDayjsToString */}
+      <p>Vacation start: {startDate && formatDayjsToString(startDate)}</p>
+      <p>Vacation end: {endDate && formatDayjsToString(endDate)} </p>
     </div>
   );
 };
