@@ -1,12 +1,13 @@
 import React from "react";
-import VacationRequestsList from "../components/VacationRequestsList/VacationRequestsList";
+import RequestsList from "../components/RequestsList/RequestsList";
 import ExampleComponent from "../components/ExampleComponent";
 
 const Home: React.FC = () => {
   return (
     <div>
       <h1>Welcome to the Home Page</h1>
-      {/* <VacationRequestsList /> */}
+
+      <RequestsList />
       <ExampleComponent />
     </div>
   );
