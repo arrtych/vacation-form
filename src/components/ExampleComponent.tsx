@@ -18,6 +18,7 @@ const ExampleComponent: React.FC = () => {
 
   const formData: VacationFormData = {
     id: 0,
+    userId: 1,
     startDate: "12/10/2024",
     endDate: "14/10/2024",
     reason: "some new",

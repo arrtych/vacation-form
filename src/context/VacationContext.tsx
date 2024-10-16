@@ -15,6 +15,7 @@ interface VacationContextProps {
   deleteVacationRequest: (id: number) => Promise<void>;
   availableVacationDays: number;
   updateAvailableVacationDays: (days: number) => Promise<void>;
+  // userId: number;
 }
 
 interface VacationProviderProps {
@@ -28,6 +29,7 @@ const VacationContext = createContext<VacationContextProps>({
   deleteVacationRequest: async () => {},
   availableVacationDays: 0,
   updateAvailableVacationDays: async () => {},
+  // userId: 0,
 });
 
 const VacationContextProvider: React.FC<VacationProviderProps> = ({
@@ -127,6 +129,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   const fetchUserData = async () => {
     try {
       const user = await fetchUser(userId);
+      // console.log("User", user);
       setAvailableVacationDays(user.availableVacationDays);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -146,6 +149,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
         deleteVacationRequest: deleteRequest,
         availableVacationDays,
         updateAvailableVacationDays,
+        // userId,
       }}
     >
       {children}

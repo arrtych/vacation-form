@@ -18,9 +18,9 @@ const CustomDatePicker: React.FC<CustomDatePickerProps> = (
   props: CustomDatePickerProps
 ) => {
   const { label, value, onChange } = { ...props };
-
+  // adapterLocale={enGB}
   return (
-    <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={enGB}>
+    <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DemoContainer components={["DatePicker"]}>
         <DatePicker
           label={label}

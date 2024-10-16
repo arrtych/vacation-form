@@ -53,7 +53,7 @@ const RequestsList: React.FC = () => {
                 }}
               >
                 <TableCell key={idx}>{request.id}</TableCell>
-                <TableCell key={idx}>{request.startDate}</TableCell>
+                <TableCell>{request.startDate}</TableCell>
                 <TableCell>{request.endDate}</TableCell>
                 {/* todo: calculate amount */}
                 <TableCell>Amount</TableCell>
