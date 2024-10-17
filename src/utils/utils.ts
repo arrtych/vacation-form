@@ -44,12 +44,16 @@ export const calculateTotalDays = (
 };
 
 /**
- * validate that the endDate is not before the startDate
+ * validate that the endDate is not before the startDate and startDate not after endDate
  * @param startDate
  * @param endDate
- * @returns true if the endDate is after or the same as the startDate, otherwise false.
+ * @returns true if the endDate is after or the same as the startDate or starDate is after endDate, otherwise false.
  */
 export const validateEndDate = (startDate: Dayjs, endDate: Dayjs): boolean => {
+  // Check if start date is after end date
+  if (startDate.isAfter(endDate)) {
+    return false;
+  }
   return endDate.isAfter(startDate) || endDate.isSame(startDate);
 };
 

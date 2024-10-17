@@ -62,7 +62,6 @@ const VacationRequestForm: React.FC = () => {
   }, [startDate]);
 
   useEffect(() => {
-    // checkFormFields();
     changeEndDate();
     // console.log("Updated End Date:", endDate);
   }, [endDate]);
@@ -151,19 +150,8 @@ const VacationRequestForm: React.FC = () => {
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const newValue = Number(event.target.value);
-    const previousValue = vacationDays;
 
-    if (startDate && endDate) {
-      if (newValue > previousValue) {
-        // increase input
-        const nextEndDate = endDate.add(1, "day");
-        setEndDate(nextEndDate);
-      } else {
-        const previousEndDate = endDate.subtract(1, "day");
-        setEndDate(previousEndDate);
-      }
-      console.log("handleVacationDaysChange +-");
-    }
+    changeVacationDays(newValue);
     setVacationDays(newValue);
   };
 
@@ -176,49 +164,93 @@ const VacationRequestForm: React.FC = () => {
 
   const changeStartDate = () => {
     if (startDate && vacationDays > 0 && !endDate) {
-      console.log("checkFormFields: sstartDate && vacationDays > 0");
+      // console.log("checkFormFields: sstartDate && vacationDays > 0");
       const calculatedEndDate = calculateEndDate(startDate, vacationDays);
-      // console.log("calculatedEndDate", calculatedEndDate);
+
       setEndDate(calculatedEndDate);
-      // return 0;
     }
 
-    if (startDate && endDate && vacationDays === 0) {
-      setVacationDays(calculateTotalDays(startDate, endDate));
-      console.log("startDate && endDate && vacationDays == 0");
+    if (startDate && endDate) {
+      if (!validateEndDate(startDate, endDate)) {
+        // console.log("changeStartDate validateEndDate");
+        setErrorDateMessage("Star Date cannot be after End Date.");
+        setStartDate(null);
+        setVacationDays(0);
+        return;
+      } else {
+        setErrorDateMessage("");
+      }
     }
 
-    if (startDate && endDate && vacationDays > 0) {
+    if (startDate && endDate && vacationDays >= 0) {
       setVacationDays(calculateTotalDays(startDate, endDate));
+      // console.log("startDate && endDate && vacationDays == 0");
     }
+
+    // if (startDate && endDate && vacationDays > 0) {
+    //   setVacationDays(calculateTotalDays(startDate, endDate));
+    // }
   };
 
   const changeEndDate = () => {
     if (endDate && vacationDays > 0 && !startDate) {
-      console.log("changeEndDate: sstartDate && vacationDays > 0");
+      // console.log("changeEndDate: sstartDate && vacationDays > 0");
       const calculatedStartDate = calculateStartDate(endDate, vacationDays);
       // console.log("calculatedStartDate", calculatedStartDate);
       setStartDate(calculatedStartDate);
     }
 
-    if (startDate && endDate && vacationDays === 0) {
+    if (startDate && endDate && vacationDays >= 0) {
       setVacationDays(calculateTotalDays(startDate, endDate));
-      console.log("startDate && endDate && vacationDays == 0");
+      // console.log("startDate && endDate && vacationDays == 0");
     }
+
+    // if (startDate && endDate && vacationDays > 0) {
+    //   // console.log("startDate && endDate && vacationDays > 0", vacationDays);
+    //   setVacationDays(calculateTotalDays(startDate, endDate));
+    // }
 
     if (startDate && endDate) {
       if (!validateEndDate(startDate, endDate)) {
-        console.log("validateEndDate");
         setErrorDateMessage("End Date cannot be before Start Date.");
+
         setEndDate(null);
         setStartDate(startDate);
-        // if (vacationDays <= 0)
         setVacationDays(0);
+
+        // if (vacationDays <= 0) {
+        //   setVacationDays(0);
+        //   // return;
+        // }
+      } else {
+        // setVacationDays(calculateTotalDays(startDate, endDate));
+        setErrorDateMessage("");
       }
     }
+  };
 
-    if (startDate && endDate && vacationDays > 0) {
-      setVacationDays(calculateTotalDays(startDate, endDate));
+  const changeVacationDays = (newValue: number) => {
+    const previousValue = vacationDays;
+    if (startDate && endDate) {
+      // if (newValue > previousValue) {
+      //   // increase input
+      //   const nextEndDate = endDate.add(1, "day");
+      //   setEndDate(nextEndDate);
+      // } else {
+      //   const previousEndDate = endDate.subtract(1, "day");
+      //   setEndDate(previousEndDate);
+      // }
+
+      const newEndDate = startDate.add(newValue - 1, "day");
+      setEndDate(newEndDate);
+      setErrorDateMessage("");
+
+      // console.log("handleVacationDaysChange +-");
+    } else if (startDate && !endDate && newValue > previousValue) {
+      //if endDate not set and input increases
+      const nextEndDate = startDate.add(0, "day");
+      setEndDate(nextEndDate);
+      setErrorDateMessage("");
     }
   };
 
@@ -295,9 +327,9 @@ const VacationRequestForm: React.FC = () => {
           <CustomCalendar startDate={startDate} endDate={endDate} />
         </Grid>
 
-        <Grid size={12}>
+        {/* <Grid size={12}>
           <DateRange startDate={startDate} endDate={endDate} />
-        </Grid>
+        </Grid> */}
 
         <Grid size={12} className={styles.formButtons}>
           <HomeButton />
