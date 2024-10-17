@@ -27,6 +27,8 @@ const RequestsList: React.FC = () => {
 
   return (
     <>
+      {/* todo: if no request add no-data text */}
+      {/* todo: add edit button */}
       <TableContainer>
         <Table aria-label="request table" className="request-table">
           <TableHead>

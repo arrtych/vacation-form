@@ -46,6 +46,21 @@ export const validateEndDate = (startDate: Dayjs, endDate: Dayjs): boolean => {
   return endDate.isAfter(startDate) || endDate.isSame(startDate);
 };
 
+/**
+ *
+ * @param startDate
+ * @param endDate
+ * @returns True if user has available vacation days
+ */
+export const isAnyAvailableVacationDays = (
+  startDate: Dayjs,
+  endDate: Dayjs,
+  availableVacationDays: number
+): boolean => {
+  const totalVacationDays = calculateTotalDays(startDate, endDate);
+  return totalVacationDays <= availableVacationDays;
+};
+
 // export const formatStringToDayjs = (dateString: string): Dayjs => {
 //   return dayjs(dateString, "DD/MM/YYYY");
 // };

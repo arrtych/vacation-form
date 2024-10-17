@@ -7,7 +7,8 @@ import {
   updateUserAvailableVacationDays,
 } from "../service/apiService";
 import { VacationFormData, VacationRequest, User } from "../types/types";
-import dayjs from "dayjs";
+import dayjs, { Dayjs } from "dayjs";
+import { calculateTotalDays, isAnyAvailableVacationDays } from "../utils/utils";
 
 interface VacationContextProps {
   vacationRequests: VacationRequest[];
@@ -54,33 +55,35 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   // Add a new vacation request via the API
   const addRequest = async (formData: VacationFormData) => {
     try {
-      const newRequest = await addVacationRequest(formData);
+      const newStartDate = dayjs(formData.startDate);
+      const newEndDate = dayjs(formData.endDate);
+      const totalVacationDays = calculateTotalDays(newStartDate, newEndDate);
 
-      // Calculate the total number of vacation days
-      const totalVacationDays = vacationRequests.reduce((total, request) => {
-        const startDate = dayjs(request.startDate);
-        const endDate = dayjs(request.endDate);
-        return total + endDate.diff(startDate, "day") + 1;
-      }, 0);
-
-      const newStartDate = dayjs(newRequest.startDate);
-      const newEndDate = dayjs(newRequest.endDate);
-      const newVacationDays = newEndDate.diff(newStartDate, "day") + 1;
-
-      if (totalVacationDays + newVacationDays > availableVacationDays) {
+      if (
+        !isAnyAvailableVacationDays(
+          newStartDate,
+          newEndDate,
+          availableVacationDays
+        )
+      ) {
         throw new Error("Total vacation days exceed available vacation days.");
+      } else {
+        console.log(
+          "totalVacationDays < availableVacationDays",
+          totalVacationDays
+        );
+        const newRequest = await addVacationRequest(formData);
+        setVacationRequests([...vacationRequests, newRequest]);
+
+        // Update available vacation days
+        const updatedAvailableVacationDays =
+          availableVacationDays - totalVacationDays;
+        await updateUserAvailableVacationDays(
+          userId,
+          updatedAvailableVacationDays
+        );
+        setAvailableVacationDays(updatedAvailableVacationDays);
       }
-
-      setVacationRequests([...vacationRequests, newRequest]);
-
-      // Update available vacation days
-      const updatedAvailableVacationDays =
-        availableVacationDays - newVacationDays;
-      await updateUserAvailableVacationDays(
-        userId,
-        updatedAvailableVacationDays
-      );
-      setAvailableVacationDays(updatedAvailableVacationDays);
     } catch (error) {
       console.error("Error adding vacation request:", error);
     }

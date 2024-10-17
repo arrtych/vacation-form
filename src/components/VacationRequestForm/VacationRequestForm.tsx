@@ -18,7 +18,9 @@ import {
   calculateEndDate,
   calculateTotalDays,
   validateEndDate,
+  isAnyAvailableVacationDays,
 } from "../../utils/utils";
+import { useNavigate } from "react-router-dom";
 
 const VacationRequestForm: React.FC = () => {
   const {
@@ -33,6 +35,7 @@ const VacationRequestForm: React.FC = () => {
   const [reason, setReason] = useState<string>("");
   const [vacationDays, setVacationDays] = useState<number>(0);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   setErrorMessage("End Date cannot be before Start Date.");
@@ -56,21 +59,29 @@ const VacationRequestForm: React.FC = () => {
     if (startDate && endDate) {
       startDateString = dayjsToDateString(startDate);
       endDateString = dayjsToDateString(endDate);
+
+      const formData: VacationFormData = {
+        id: 0,
+        userId: 1,
+        startDate: startDateString,
+        endDate: endDateString,
+        reason: reason,
+      };
+
+      if (
+        isAnyAvailableVacationDays(startDate, endDate, availableVacationDays)
+      ) {
+        await addVacationRequest(formData);
+        console.log("formData", formData);
+        resetFormFields();
+        navigate("/");
+      }
     }
 
-    const formData: VacationFormData = {
-      id: 0,
-      userId: 1,
-      startDate: startDateString,
-      endDate: endDateString,
-      reason: reason,
-    };
-    await addVacationRequest(formData);
-    console.log("formData", formData);
-    resetFormFields();
-
-    //   console.log("Start Date:", startDateString);
-    //   console.log("End Date:", endDateString);
+    // try {
+    // } catch (error) {
+    //   console.error("Error submitting vacation request:", error);
+    // }
   };
 
   const handleReasonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,11 +135,11 @@ const VacationRequestForm: React.FC = () => {
     }
   };
 
-  const changeEndDate = () => {
-    if (startDate && endDate && vacationDays != 0) {
-      setEndDate(endDate);
-    }
-  };
+  // const changeEndDate = () => {
+  //   if (startDate && endDate && vacationDays != 0) {
+  //     setEndDate(endDate);
+  //   }
+  // };
 
   return (
     <form onSubmit={handleFormSubmit} className={styles.form}>
@@ -156,6 +167,7 @@ const VacationRequestForm: React.FC = () => {
             onChange={handleStartDateChange}
           />
         </Grid>
+
         {errorMessage && (
           <Grid size={12}>
             <Alert
@@ -174,13 +186,10 @@ const VacationRequestForm: React.FC = () => {
               }
             >
               {errorMessage}
-
-              {/* <div>
-                <CloseIcon />
-              </div> */}
             </Alert>
           </Grid>
         )}
+
         <Grid size={12}>
           <CustomDatePicker
             label="End Date"
