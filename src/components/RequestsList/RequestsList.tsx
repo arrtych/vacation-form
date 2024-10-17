@@ -15,8 +15,9 @@ import dayjs from "dayjs";
 import { calculateTotalDays } from "../../utils/utils";
 
 const RequestsList: React.FC = () => {
-  const { vacationRequests, deleteVacationRequest } =
+  const { vacationRequests, deleteVacationRequest, availableVacationDays } =
     useContext(VacationContext);
+
   const tableHeaders = ["#", "Start Date", "End Date", "Amount", "Reason", ""];
 
   const handleRemoveRequest = async (id: number) => {
@@ -32,6 +33,7 @@ const RequestsList: React.FC = () => {
     const endDateStr = dayjs(endDate);
     return calculateTotalDays(startDateStr, endDateStr);
   };
+
   return (
     <>
       {/* todo: if no request add no-data text */}

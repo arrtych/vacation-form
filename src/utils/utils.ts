@@ -23,6 +23,13 @@ export const calculateEndDate = (
   return startDate.add(vacationDays - 1, "day");
 };
 
+export const calculateStartDate = (
+  endDate: Dayjs,
+  vacationDays: number
+): Dayjs => {
+  return endDate.subtract(vacationDays - 1, "day");
+};
+
 /**
  * Get total amount of days between two dates
  * @param startDate

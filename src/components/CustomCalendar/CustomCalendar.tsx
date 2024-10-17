@@ -4,8 +4,9 @@ import isBetween from "dayjs/plugin/isBetween";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
-import CustomDay from "./CustomDay/CustomDay";
+import CustomDay from "../CustomDay/CustomDay";
 
+//todo: check custom day props
 interface CustomCalendarProps {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
@@ -16,6 +17,11 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
   endDate,
 }) => {
   // Provide a default value for startDate if it is null
+  const converted = {
+    color: "black !important",
+    backgroundColor: "white !important",
+  };
+
   const [value, setValue] = useState<Dayjs>(startDate || dayjs());
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>

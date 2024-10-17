@@ -26,27 +26,28 @@ const CustomDay: React.FC<CustomDayProps> = (props) => {
       sx={{
         ...(isInRange && {
           // backgroundColor: 'rgba(25, 118, 210, 0.5)',
-          backgroundColor: "#1976d2",
+          // backgroundColor: "#1976d2",
+          backgroundColor: "#50C878 !important",
           color: "white",
-          // "&:hover": {
-          //   // backgroundColor: 'rgba(25, 118, 210, 0.7)',
-          //   backgroundColor: "#1976d2",
-          // },
+          "&:hover": {
+            // backgroundColor: 'rgba(25, 118, 210, 0.7)',
+            backgroundColor: "#50C878",
+          },
         }),
-        ...(isStart && {
-          backgroundColor: "#1976d2",
-          color: "white",
-          // "&:hover": {
-          //   backgroundColor: "#1976d2",
-          // },
-        }),
-        ...(isEnd && {
-          backgroundColor: "#1976d2",
-          color: "white",
-          // "&:hover": {
-          //   backgroundColor: "#1976d2",
-          // },
-        }),
+        // ...(isStart && {
+        //   backgroundColor: "#1976d2",
+        //   color: "white",
+        //   // "&:hover": {
+        //   //   backgroundColor: "#1976d2",
+        //   // },
+        // }),
+        // ...(isEnd && {
+        //   backgroundColor: "#1976d2",
+        //   color: "white",
+        //   // "&:hover": {
+        //   //   backgroundColor: "#1976d2",
+        //   // },
+        // }),
       }}
     />
   );

@@ -2,11 +2,12 @@ import { Dayjs } from "dayjs";
 import React from "react";
 import { dayjsToDateString } from "../../utils/utils";
 
+//todo: check custom day/calendar props.
 interface DateRangeProps {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
 }
-//todo: rename component name
+
 const DateRange: React.FC<DateRangeProps> = (props: DateRangeProps) => {
   const { startDate, endDate } = { ...props };
   return (

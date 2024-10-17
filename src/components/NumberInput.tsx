@@ -20,6 +20,7 @@ const NumberInput: React.FC<NumberInputProps> = (props: NumberInputProps) => {
       onChange={onChange}
       variant="outlined"
       fullWidth
+      sx={{ marginTop: "8px" }}
       inputProps={{
         min: 0,
         step: 1,

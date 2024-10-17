@@ -5,7 +5,7 @@ import CloseIcon from "@mui/icons-material/Close";
 
 interface AlertMessageProps {
   message: string;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 const AlertMessage: React.FC<AlertMessageProps> = (
@@ -17,14 +17,16 @@ const AlertMessage: React.FC<AlertMessageProps> = (
       <Alert
         severity="error"
         action={
-          <IconButton
-            aria-label="close"
-            color="inherit"
-            size="small"
-            onClick={onClick}
-          >
-            <CloseIcon fontSize="inherit" />
-          </IconButton>
+          onClick && (
+            <IconButton
+              aria-label="close"
+              color="inherit"
+              size="small"
+              onClick={onClick}
+            >
+              <CloseIcon fontSize="inherit" />
+            </IconButton>
+          )
         }
       >
         {message}
