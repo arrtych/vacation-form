@@ -11,11 +11,13 @@ import {
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { VacationContext } from "../../context/VacationContext";
+import dayjs from "dayjs";
+import { calculateTotalDays } from "../../utils/utils";
 
 const RequestsList: React.FC = () => {
   const { vacationRequests, deleteVacationRequest } =
     useContext(VacationContext);
-  const tableHeaders = ["Id", "Start Date", "End Date", "Amount", "Reason", ""];
+  const tableHeaders = ["#", "Start Date", "End Date", "Amount", "Reason", ""];
 
   const handleRemoveRequest = async (id: number) => {
     try {
@@ -25,6 +27,11 @@ const RequestsList: React.FC = () => {
     }
   };
 
+  const getVacationAmount = (startDate: string, endDate: string): number => {
+    const startDateStr = dayjs(startDate);
+    const endDateStr = dayjs(endDate);
+    return calculateTotalDays(startDateStr, endDateStr);
+  };
   return (
     <>
       {/* todo: if no request add no-data text */}
@@ -57,8 +64,9 @@ const RequestsList: React.FC = () => {
                 <TableCell key={idx}>{request.id}</TableCell>
                 <TableCell>{request.startDate}</TableCell>
                 <TableCell>{request.endDate}</TableCell>
-                {/* todo: calculate amount */}
-                <TableCell>Amount</TableCell>
+                <TableCell>
+                  {getVacationAmount(request.startDate, request.endDate)}
+                </TableCell>
                 <TableCell>{request.reason}</TableCell>
                 <TableCell>
                   <Button

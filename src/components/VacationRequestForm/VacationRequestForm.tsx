@@ -21,6 +21,7 @@ import {
   isAnyAvailableVacationDays,
 } from "../../utils/utils";
 import { useNavigate } from "react-router-dom";
+import AlertMessage from "../AlertMessage";
 
 const VacationRequestForm: React.FC = () => {
   const {
@@ -34,11 +35,14 @@ const VacationRequestForm: React.FC = () => {
   const [endDate, setEndDate] = useState<Dayjs | null>(null);
   const [reason, setReason] = useState<string>("");
   const [vacationDays, setVacationDays] = useState<number>(0);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorDateMessage, setErrorDateMessage] = useState<string | null>(null);
+  const [errorFormMessage, setErrorFormMessage] = useState<string | null>(null);
   const navigate = useNavigate();
 
   // useEffect(() => {
-  //   setErrorMessage("End Date cannot be before Start Date.");
+  //   setErrorFormMessage(
+  //     "User has no available vacation days. Please edit this or other vacation requests."
+  //   );
   // }, []);
 
   useEffect(() => {
@@ -75,13 +79,12 @@ const VacationRequestForm: React.FC = () => {
         console.log("formData", formData);
         resetFormFields();
         navigate("/");
+      } else {
+        setErrorFormMessage(
+          "You don't have enough available vacation days. Please edit this or other vacation requests."
+        );
       }
     }
-
-    // try {
-    // } catch (error) {
-    //   console.error("Error submitting vacation request:", error);
-    // }
   };
 
   const handleReasonChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -127,7 +130,7 @@ const VacationRequestForm: React.FC = () => {
 
     if (startDate && endDate) {
       if (!validateEndDate(startDate, endDate)) {
-        setErrorMessage("End Date cannot be before Start Date.");
+        setErrorDateMessage("End Date cannot be before Start Date.");
         setEndDate(null);
         if (vacationDays <= 0) setVacationDays(0);
         return;
@@ -147,6 +150,13 @@ const VacationRequestForm: React.FC = () => {
         <Grid size={12} className={styles.title}>
           <h2>Vacation form</h2>
         </Grid>
+
+        {errorFormMessage && (
+          <AlertMessage
+            message={errorFormMessage}
+            onClick={() => setErrorFormMessage("")}
+          />
+        )}
 
         <Grid size={12}>
           <TotalDays amount={availableVacationDays} />
@@ -168,26 +178,11 @@ const VacationRequestForm: React.FC = () => {
           />
         </Grid>
 
-        {errorMessage && (
-          <Grid size={12}>
-            <Alert
-              severity="error"
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setErrorMessage("");
-                  }}
-                >
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-            >
-              {errorMessage}
-            </Alert>
-          </Grid>
+        {errorDateMessage && (
+          <AlertMessage
+            message={errorDateMessage}
+            onClick={() => setErrorDateMessage("")}
+          />
         )}
 
         <Grid size={12}>
