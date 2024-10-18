@@ -1,0 +1,10 @@
+.box {
+  max-width: 1080px;
+  margin: 0 auto;
+}
+
+.actionButtons {
+  display: flex;
+  justify-content: center;
+  gap: 1em;
+}

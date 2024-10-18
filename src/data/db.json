@@ -3,16 +3,23 @@
     {
       "id": 1,
       "name": "John Doe",
-      "availableVacationDays": 5
+      "availableVacationDays": 2
     }
   ],
   "vacation_requests": [
     {
       "id": 1,
       "userId": 1,
-      "startDate": "10/20/2024",
-      "endDate": "10/24/2024",
-      "reason": "a"
+      "startDate": "10/13/2024",
+      "endDate": "10/16/2024",
+      "reason": "aaab"
+    },
+    {
+      "id": 2,
+      "userId": 1,
+      "startDate": "10/06/2024",
+      "endDate": "10/09/2024",
+      "reason": ""
     }
   ]
 }

@@ -1,6 +1,7 @@
 // VacationRequestsList.tsx
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import {
+  Box,
   Button,
   Table,
   TableBody,
@@ -10,15 +11,29 @@ import {
   TableRow,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { VacationContext } from "../../context/VacationContext";
+import VacationRequestForm from "../VacationRequestForm/VacationRequestForm";
 import dayjs from "dayjs";
 import { calculateTotalDays } from "../../utils/utils";
+import styles from "./RequestsList.module.css";
+import CustomModal from "../CustomModal/CustomModal";
 
 const RequestsList: React.FC = () => {
   const { vacationRequests, deleteVacationRequest, availableVacationDays } =
     useContext(VacationContext);
+  const [editingRequest, setEditingRequest] = useState<number | null>(null);
+  const [modalOpen, setModalOpen] = useState(false);
 
-  const tableHeaders = ["#", "Start Date", "End Date", "Amount", "Reason", ""];
+  const tableHeaders = [
+    "#",
+    "Start Date",
+    "End Date",
+    "Days Amount",
+    "Reason",
+    "",
+    // "",
+  ];
 
   const handleRemoveRequest = async (id: number) => {
     try {
@@ -28,6 +43,16 @@ const RequestsList: React.FC = () => {
     }
   };
 
+  const handleUpdateRequest = async (id: number) => {
+    setEditingRequest(id);
+    setModalOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setEditingRequest(null);
+    setModalOpen(false);
+  };
+
   const getVacationAmount = (startDate: string, endDate: string): number => {
     const startDateStr = dayjs(startDate);
     const endDateStr = dayjs(endDate);
@@ -35,9 +60,25 @@ const RequestsList: React.FC = () => {
   };
 
   return (
-    <>
+    <Box className={styles.box}>
       {/* todo: if no request add no-data text */}
-      {/* todo: add edit button */}
+      {editingRequest && (
+        <>
+          <CustomModal
+            content={
+              <VacationRequestForm
+                requestToEdit={vacationRequests.find(
+                  (req) => req.id === editingRequest
+                )}
+                onClose={handleCloseForm}
+              />
+            }
+            open={modalOpen}
+            onClose={handleCloseForm}
+          />
+        </>
+      )}
+
       <TableContainer>
         <Table aria-label="request table" className="request-table">
           <TableHead>
@@ -46,6 +87,7 @@ const RequestsList: React.FC = () => {
                 <TableCell
                   key={`${header}-${idx}`}
                   sx={{ fontWeight: "bold", fontSize: "1rem" }}
+                  align="center"
                 >
                   {header}
                 </TableCell>
@@ -63,29 +105,47 @@ const RequestsList: React.FC = () => {
                   },
                 }}
               >
-                <TableCell key={idx}>{request.id}</TableCell>
-                <TableCell>{request.startDate}</TableCell>
-                <TableCell>{request.endDate}</TableCell>
-                <TableCell>
+                <TableCell key={idx} align="center">
+                  {request.id}
+                </TableCell>
+                <TableCell align="center">{request.startDate}</TableCell>
+                <TableCell align="center">{request.endDate}</TableCell>
+                <TableCell align="center">
                   {getVacationAmount(request.startDate, request.endDate)}
                 </TableCell>
-                <TableCell>{request.reason}</TableCell>
-                <TableCell>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="error"
-                    onClick={() => handleRemoveRequest(request.id)}
-                  >
-                    <DeleteIcon />
-                  </Button>
+                <TableCell align="center">{request.reason}</TableCell>
+
+                <TableCell align="center">
+                  <div className={styles.actionButtons}>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      onClick={() => handleUpdateRequest(request.id)}
+                    >
+                      <EditIcon />
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="error"
+                      onClick={() => handleRemoveRequest(request.id)}
+                    >
+                      <DeleteIcon />
+                    </Button>
+                  </div>
                 </TableCell>
+
+                {/* <TableCell align="center">
+
+                </TableCell> */}
               </TableRow>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
-    </>
+    </Box>
   );
 };
 

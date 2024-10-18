@@ -68,3 +68,24 @@ export const updateUserAvailableVacationDays = async (
     throw error;
   }
 };
+
+export const updateVacationRequest = async (
+  id: number,
+  formData: VacationFormData
+): Promise<VacationRequest> => {
+  try {
+    const formattedFormData = {
+      ...formData,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+    };
+    const response = await axios.put<VacationRequest>(
+      API_BASE_URL + `vacation_requests/${id}`,
+      formattedFormData
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error updating vacation request:", error);
+    throw error;
+  }
+};

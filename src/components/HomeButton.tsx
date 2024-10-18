@@ -12,7 +12,7 @@ const HomeButton: React.FC = () => {
 
   return (
     <Button variant="contained" color="primary" onClick={handleNavigateHome}>
-      Go to Home
+      Home
     </Button>
   );
 };

@@ -5,6 +5,7 @@ import {
   deleteVacationRequest,
   fetchUser,
   updateUserAvailableVacationDays,
+  updateVacationRequest,
 } from "../service/apiService";
 import { VacationFormData, VacationRequest, User } from "../types/types";
 import dayjs, { Dayjs } from "dayjs";
@@ -16,6 +17,10 @@ interface VacationContextProps {
   deleteVacationRequest: (id: number) => Promise<void>;
   availableVacationDays: number;
   updateAvailableVacationDays: (days: number) => Promise<void>;
+  updateVacationRequest: (
+    id: number,
+    formData: VacationFormData
+  ) => Promise<void>;
   // userId: number;
 }
 
@@ -28,6 +33,7 @@ const VacationContext = createContext<VacationContextProps>({
   vacationRequests: [],
   addVacationRequest: async () => {},
   deleteVacationRequest: async () => {},
+  updateVacationRequest: async () => {},
   availableVacationDays: 0,
   updateAvailableVacationDays: async () => {},
   // userId: 0,
@@ -119,6 +125,55 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
     }
   };
 
+  // Update an existing vacation request via the API
+  const updateRequest = async (id: number, formData: VacationFormData) => {
+    try {
+      const oldRequest = vacationRequests.find((request) => request.id === id);
+      if (oldRequest) {
+        const oldStartDate = dayjs(oldRequest.startDate);
+        const oldEndDate = dayjs(oldRequest.endDate);
+        const oldTotalVacationDays = calculateTotalDays(
+          oldStartDate,
+          oldEndDate
+        );
+        const newStartDate = dayjs(formData.startDate);
+        const newEndDate = dayjs(formData.endDate);
+        const newTotalVacationDays = calculateTotalDays(
+          newStartDate,
+          newEndDate
+        );
+        if (
+          !isAnyAvailableVacationDays(
+            newStartDate,
+            newEndDate,
+            availableVacationDays + oldTotalVacationDays
+          )
+        ) {
+          throw new Error(
+            "Total vacation days exceed available vacation days."
+          );
+        } else {
+          const updatedRequest = await updateVacationRequest(id, formData);
+          setVacationRequests(
+            vacationRequests.map((request) =>
+              request.id === id ? updatedRequest : request
+            )
+          );
+          // Update available vacation days
+          const updatedAvailableVacationDays =
+            availableVacationDays + oldTotalVacationDays - newTotalVacationDays;
+          await updateUserAvailableVacationDays(
+            userId,
+            updatedAvailableVacationDays
+          );
+          setAvailableVacationDays(updatedAvailableVacationDays);
+        }
+      }
+    } catch (error) {
+      console.error("Error updating vacation request:", error);
+    }
+  };
+
   // Update available vacation days
   const updateAvailableVacationDays = async (days: number) => {
     try {
@@ -152,6 +207,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
         deleteVacationRequest: deleteRequest,
         availableVacationDays,
         updateAvailableVacationDays,
+        updateVacationRequest: updateRequest,
         // userId,
       }}
     >

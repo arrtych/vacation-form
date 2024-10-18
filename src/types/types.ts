@@ -13,7 +13,7 @@ export interface VacationFormData {
   userId: number;
   startDate: string;
   endDate: string;
-  reason: string;
+  reason?: string;
 }
 
 // export interface userData {
