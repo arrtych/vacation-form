@@ -8,3 +8,10 @@
   justify-content: center;
   gap: 1em;
 }
+
+.reason {
+  max-width: 300px;
+  height: auto;
+  word-wrap: break-word;
+  white-space: normal;
+}

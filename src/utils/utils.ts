@@ -1,5 +1,7 @@
 import React, { ReactNode } from "react";
 import dayjs, { Dayjs } from "dayjs";
+import { VacationRequest } from "../types/types";
+import { start } from "repl";
 
 /**
  * Converts a Dayjs object to a date string in the format 'MM/DD/YYYY'.
@@ -58,7 +60,7 @@ export const validateEndDate = (startDate: Dayjs, endDate: Dayjs): boolean => {
 };
 
 /**
- *
+ * Check if user has available vacation days
  * @param startDate
  * @param endDate
  * @returns True if user has available vacation days
@@ -75,3 +77,46 @@ export const isAnyAvailableVacationDays = (
 // export const formatStringToDayjs = (dateString: string): Dayjs => {
 //   return dayjs(dateString, "DD/MM/YYYY");
 // };
+
+/**
+ * Format date in string into format with month name
+ * @param dateString
+ * @returns
+ */
+export const formatToFullDate = (dateString: string): string => {
+  const date: Dayjs = dayjs(dateString, "MM/DD/YYYY");
+  return date.format("D MMMM YYYY");
+};
+
+/**
+ * Check if the requested vacation dates overlap with any existing vacation requests.
+ * @param startDate
+ * @param endDate
+ * @param requests
+ * @returns true if dates overlap
+ */
+export const isOverlapping = (
+  startDate: Dayjs,
+  endDate: Dayjs,
+  requests: VacationRequest[]
+): boolean => {
+  for (const request of requests) {
+    const checkStartDate = dayjs(request.startDate);
+    const checkEndDate = dayjs(request.endDate);
+
+    // Check if the intervals overlap
+    if (startDate.isBefore(checkEndDate) && checkStartDate.isBefore(endDate)) {
+      return true;
+    }
+    if (
+      startDate.isSame(checkStartDate) ||
+      endDate.isSame(checkEndDate) ||
+      startDate.isSame(checkEndDate) ||
+      endDate.isSame(checkStartDate)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+};

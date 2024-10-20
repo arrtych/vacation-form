@@ -15,7 +15,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { VacationContext } from "../../context/VacationContext";
 import VacationRequestForm from "../VacationRequestForm/VacationRequestForm";
 import dayjs from "dayjs";
-import { calculateTotalDays } from "../../utils/utils";
+import { calculateTotalDays, formatToFullDate } from "../../utils/utils";
 import styles from "./RequestsList.module.css";
 import CustomModal from "../CustomModal/CustomModal";
 
@@ -108,12 +108,18 @@ const RequestsList: React.FC = () => {
                 <TableCell key={idx} align="center">
                   {request.id}
                 </TableCell>
-                <TableCell align="center">{request.startDate}</TableCell>
-                <TableCell align="center">{request.endDate}</TableCell>
+                <TableCell align="center">
+                  {formatToFullDate(request.startDate)}
+                </TableCell>
+                <TableCell align="center">
+                  {formatToFullDate(request.endDate)}
+                </TableCell>
                 <TableCell align="center">
                   {getVacationAmount(request.startDate, request.endDate)}
                 </TableCell>
-                <TableCell align="center">{request.reason}</TableCell>
+                <TableCell align="center" className={styles.reason}>
+                  {request.reason}
+                </TableCell>
 
                 <TableCell align="center">
                   <div className={styles.actionButtons}>

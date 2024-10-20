@@ -1,5 +1,5 @@
 import axios from "axios";
-import { VacationRequest, VacationFormData, User } from "../types/types";
+import { VacationRequest, User } from "../types/types";
 
 const API_BASE_URL = "http://localhost:8080/";
 
@@ -16,7 +16,7 @@ export const fetchVacationRequests = async (): Promise<VacationRequest[]> => {
 };
 
 export const addVacationRequest = async (
-  formData: VacationFormData
+  formData: VacationRequest
 ): Promise<VacationRequest> => {
   try {
     const formattedFormData = {
@@ -71,7 +71,7 @@ export const updateUserAvailableVacationDays = async (
 
 export const updateVacationRequest = async (
   id: number,
-  formData: VacationFormData
+  formData: VacationRequest
 ): Promise<VacationRequest> => {
   try {
     const formattedFormData = {

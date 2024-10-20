@@ -7,19 +7,19 @@ import {
   updateUserAvailableVacationDays,
   updateVacationRequest,
 } from "../service/apiService";
-import { VacationFormData, VacationRequest, User } from "../types/types";
+import { VacationRequest, User } from "../types/types";
 import dayjs, { Dayjs } from "dayjs";
 import { calculateTotalDays, isAnyAvailableVacationDays } from "../utils/utils";
 
 interface VacationContextProps {
   vacationRequests: VacationRequest[];
-  addVacationRequest: (formData: VacationFormData) => Promise<void>;
+  addVacationRequest: (formData: VacationRequest) => Promise<void>;
   deleteVacationRequest: (id: number) => Promise<void>;
   availableVacationDays: number;
   updateAvailableVacationDays: (days: number) => Promise<void>;
   updateVacationRequest: (
     id: number,
-    formData: VacationFormData
+    formData: VacationRequest
   ) => Promise<void>;
   // userId: number;
 }
@@ -59,7 +59,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   };
 
   // Add a new vacation request via the API
-  const addRequest = async (formData: VacationFormData) => {
+  const addRequest = async (formData: VacationRequest) => {
     try {
       const newStartDate = dayjs(formData.startDate);
       const newEndDate = dayjs(formData.endDate);
@@ -74,10 +74,10 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
       ) {
         throw new Error("Total vacation days exceed available vacation days.");
       } else {
-        console.log(
-          "totalVacationDays < availableVacationDays",
-          totalVacationDays
-        );
+        // console.log(
+        //   "totalVacationDays < availableVacationDays",
+        //   totalVacationDays
+        // );
         const newRequest = await addVacationRequest(formData);
         setVacationRequests([...vacationRequests, newRequest]);
 
@@ -126,7 +126,7 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   };
 
   // Update an existing vacation request via the API
-  const updateRequest = async (id: number, formData: VacationFormData) => {
+  const updateRequest = async (id: number, formData: VacationRequest) => {
     try {
       const oldRequest = vacationRequests.find((request) => request.id === id);
       if (oldRequest) {

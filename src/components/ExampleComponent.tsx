@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 import { VacationContext } from "../context/VacationContext";
-import { VacationFormData } from "../types/types";
+import { VacationRequest } from "../types/types";
 
 const ExampleComponent: React.FC = () => {
   const {
@@ -10,13 +10,7 @@ const ExampleComponent: React.FC = () => {
     availableVacationDays,
   } = useContext(VacationContext);
 
-  // const [formData, setFormData] = useState<VacationFormData>({
-  //   startDate: "",
-  //   endDate: "",
-  //   reason: "",
-  // });
-
-  const formData: VacationFormData = {
+  const formData: VacationRequest = {
     id: 0,
     userId: 1,
     startDate: "12/10/2024",
@@ -27,10 +21,6 @@ const ExampleComponent: React.FC = () => {
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     console.log("input", value);
-    // setFormData({
-    //   ...formData,
-    //   [name]: value,
-    // });
   };
 
   const handleAddRequest = async () => {
