@@ -8,10 +8,9 @@ import styles from "./VacationRequestForm.module.css";
 import NumberInput from "../NumberInput";
 import dayjs, { Dayjs } from "dayjs";
 import CustomCalendar from "../CustomCalendar/CustomCalendar";
-import DateRange from "../DateRange/DateRange";
 import TotalDays from "../TotalDays/TotalDays";
 import HomeButton from "../HomeButton";
-import CloseIcon from "@mui/icons-material/Close";
+
 import {
   dayjsToDateString,
   calculateEndDate,
@@ -37,7 +36,6 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
     vacationRequests,
     addVacationRequest,
     availableVacationDays,
-    updateAvailableVacationDays,
     updateVacationRequest,
   } = useContext(VacationContext);
 
@@ -68,6 +66,7 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
   const [startDateError, setStartDateError] = useState<string | null>(null);
   const [endDateError, setEndDateError] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -76,12 +75,10 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
 
   useEffect(() => {
     changeStartDate();
-    // console.log("Updated Start Date:", startDate);
   }, [startDate]);
 
   useEffect(() => {
     changeEndDate();
-    // console.log("Updated End Date:", endDate);
   }, [endDate]);
 
   const handleFormSubmit = async (e: React.FormEvent) => {
@@ -117,7 +114,6 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
       if (onClose) onClose();
       navigate("/");
       console.log("formData", formData);
-      // }
     }
   };
 
@@ -148,23 +144,40 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
     }
 
     if (startDate && endDate) {
-      if (isOverlapping(startDate, endDate, vacationRequests)) {
+      const requestsToCheck: VacationRequest[] = vacationRequests.filter(
+        (request) => request.id !== requestToEdit?.id
+      );
+
+      if (isOverlapping(startDate, endDate, requestsToCheck)) {
         setIsOverlappingError(
           "The requested dates overlap with an existing vacation request."
         );
-        console.log("----isOverlapping");
+        // console.log("----isOverlapping");
         isValid = false;
       } else {
         setIsOverlappingError(null);
       }
 
+      const oldRequest = vacationRequests.find(
+        (request) => request.id === requestToEdit?.id
+      );
+      const oldTotalVacationDays = oldRequest
+        ? calculateTotalDays(
+            dayjs(oldRequest.startDate),
+            dayjs(oldRequest.endDate)
+          )
+        : 0;
+
       if (
-        !isAnyAvailableVacationDays(startDate, endDate, availableVacationDays)
+        !isAnyAvailableVacationDays(
+          startDate,
+          endDate,
+          availableVacationDays + oldTotalVacationDays
+        )
       ) {
         setErrorFormMessage(
           "You don't have enough available vacation days. Please edit this or other vacation requests."
         );
-        console.log("----!isAnyAvailableVacationDays");
         isValid = false;
       } else {
         setErrorFormMessage(null);
@@ -211,7 +224,7 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
 
     if (startDate && endDate) {
       if (!validateEndDate(startDate, endDate)) {
-        setErrorDateMessage("Star Date cannot be after End Date.");
+        setErrorDateMessage("Start Date cannot be after End Date.");
         setStartDate(null);
         setVacationDays(0);
         return;
@@ -228,15 +241,12 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
 
   const changeEndDate = () => {
     if (endDate && vacationDays > 0 && !startDate) {
-      // console.log("changeEndDate: sstartDate && vacationDays > 0");
       const calculatedStartDate = calculateStartDate(endDate, vacationDays);
-      // console.log("calculatedStartDate", calculatedStartDate);
       setStartDate(calculatedStartDate);
     }
 
     if (startDate && endDate && vacationDays >= 0) {
       setVacationDays(calculateTotalDays(startDate, endDate));
-      // console.log("startDate && endDate && vacationDays == 0");
     }
 
     if (startDate && endDate) {
@@ -269,7 +279,9 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
     <form onSubmit={handleFormSubmit} className={styles.form}>
       <Grid container rowSpacing={1} className={styles.container}>
         <Grid size={12} className={styles.title}>
-          <h3>New Vacation Request</h3>
+          <h3>
+            {requestToEdit ? "Review Vacation Request" : "New Vacation Request"}
+          </h3>
         </Grid>
 
         {errorFormMessage && (
@@ -350,9 +362,8 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
         </Grid> */}
 
         <Grid size={12} className={styles.formButtons}>
-          {/* <HomeButton /> */}
           <Button type="submit" variant="contained" color="primary">
-            Submit
+            Submit request
           </Button>
         </Grid>
       </Grid>

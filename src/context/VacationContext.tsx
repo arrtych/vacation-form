@@ -129,48 +129,48 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
   const updateRequest = async (id: number, formData: VacationRequest) => {
     try {
       const oldRequest = vacationRequests.find((request) => request.id === id);
-      if (oldRequest) {
-        const oldStartDate = dayjs(oldRequest.startDate);
-        const oldEndDate = dayjs(oldRequest.endDate);
-        const oldTotalVacationDays = calculateTotalDays(
-          oldStartDate,
-          oldEndDate
-        );
-        const newStartDate = dayjs(formData.startDate);
-        const newEndDate = dayjs(formData.endDate);
-        const newTotalVacationDays = calculateTotalDays(
-          newStartDate,
-          newEndDate
-        );
-        if (
-          !isAnyAvailableVacationDays(
-            newStartDate,
-            newEndDate,
-            availableVacationDays + oldTotalVacationDays
-          )
-        ) {
-          throw new Error(
-            "Total vacation days exceed available vacation days."
-          );
-        } else {
-          const updatedRequest = await updateVacationRequest(id, formData);
-          setVacationRequests(
-            vacationRequests.map((request) =>
-              request.id === id ? updatedRequest : request
-            )
-          );
-          // Update available vacation days
-          const updatedAvailableVacationDays =
-            availableVacationDays + oldTotalVacationDays - newTotalVacationDays;
-          await updateUserAvailableVacationDays(
-            userId,
-            updatedAvailableVacationDays
-          );
-          setAvailableVacationDays(updatedAvailableVacationDays);
-        }
+      if (!oldRequest) {
+        console.error("Vacation request not found.");
+        throw new Error("Vacation request not found.");
       }
+
+      const oldStartDate = dayjs(oldRequest.startDate);
+      const oldEndDate = dayjs(oldRequest.endDate);
+      const oldTotalVacationDays = calculateTotalDays(oldStartDate, oldEndDate);
+
+      const newStartDate = dayjs(formData.startDate);
+      const newEndDate = dayjs(formData.endDate);
+      const newTotalVacationDays = calculateTotalDays(newStartDate, newEndDate);
+
+      // Calculate the difference in vacation days
+      const vacationDaysDifference =
+        newTotalVacationDays - oldTotalVacationDays;
+
+      // Check if the new request exceeds available vacation days
+      if (vacationDaysDifference > availableVacationDays) {
+        console.error("Total vacation days exceed available vacation days.");
+        throw new Error("Total vacation days exceed available vacation days.");
+      }
+
+      // Update the vacation request
+      const updatedRequest = await updateVacationRequest(id, formData);
+      setVacationRequests(
+        vacationRequests.map((request) =>
+          request.id === id ? updatedRequest : request
+        )
+      );
+
+      // Update available vacation days
+      const updatedAvailableVacationDays =
+        availableVacationDays - vacationDaysDifference;
+      await updateUserAvailableVacationDays(
+        userId,
+        updatedAvailableVacationDays
+      );
+      setAvailableVacationDays(updatedAvailableVacationDays);
     } catch (error) {
       console.error("Error updating vacation request:", error);
+      throw error; // Re-throw the error to handle it at a higher level if needed
     }
   };
 

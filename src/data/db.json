@@ -3,29 +3,29 @@
     {
       "id": 1,
       "name": "John Doe",
-      "availableVacationDays": 1
+      "availableVacationDays": 0
     }
   ],
   "vacation_requests": [
     {
-      "id": 1,
-      "userId": 1,
-      "startDate": "10/13/2024",
-      "endDate": "10/16/2024",
-      "reason": ""
-    },
-    {
-      "id": 2,
-      "userId": 1,
-      "startDate": "10/27/2024",
-      "endDate": "10/30/2024",
-      "reason": ""
-    },
-    {
       "id": 3,
       "userId": 1,
-      "startDate": "10/31/2024",
-      "endDate": "10/31/2024",
+      "startDate": "10/15/2024",
+      "endDate": "10/18/2024",
+      "reason": ""
+    },
+    {
+      "id": 4,
+      "userId": 1,
+      "startDate": "10/22/2024",
+      "endDate": "10/25/2024",
+      "reason": ""
+    },
+    {
+      "id": 5,
+      "userId": 1,
+      "startDate": "10/07/2024",
+      "endDate": "10/08/2024",
       "reason": ""
     }
   ]
