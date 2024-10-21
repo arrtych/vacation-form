@@ -35,7 +35,6 @@ const VacationContext = createContext<VacationContextProps>({
   updateVacationRequest: async () => {},
   availableVacationDays: 0,
   updateAvailableVacationDays: async () => {},
-  // userId: 0,
 });
 
 const VacationContextProvider: React.FC<VacationProviderProps> = ({

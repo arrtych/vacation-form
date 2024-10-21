@@ -8,8 +8,6 @@ import Home from "../pages/Home/Home";
 import FormPage from "../pages/FormPage/FormPage";
 
 const VacationApp: React.FC = () => {
-  const { vacationRequests, addVacationRequest } = useContext(VacationContext);
-
   return (
     <Router>
       <Navbar />
