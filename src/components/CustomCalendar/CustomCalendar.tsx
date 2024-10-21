@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import isBetween from "dayjs/plugin/isBetween";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -11,7 +11,7 @@ dayjs.extend(updateLocale);
 dayjs.updateLocale("en", {
   weekStart: 1,
 });
-//todo: check custom day props
+
 interface CustomCalendarProps {
   startDate: Dayjs | null;
   endDate: Dayjs | null;
@@ -22,6 +22,13 @@ const CustomCalendar: React.FC<CustomCalendarProps> = ({
   endDate,
 }) => {
   const [value, setValue] = useState<Dayjs>(startDate || dayjs());
+
+  useEffect(() => {
+    if (startDate) {
+      setValue(startDate);
+    }
+  }, [startDate]);
+
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DateCalendar

@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
-const HomeButton: React.FC = () => {
+const CancelButton: React.FC = () => {
   const navigate = useNavigate();
 
   const handleNavigateHome = () => {
@@ -12,9 +12,9 @@ const HomeButton: React.FC = () => {
 
   return (
     <Button variant="contained" color="primary" onClick={handleNavigateHome}>
-      Home
+      Cancel
     </Button>
   );
 };
 
-export default HomeButton;
+export default CancelButton;

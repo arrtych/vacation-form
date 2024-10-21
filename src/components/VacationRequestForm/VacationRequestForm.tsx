@@ -9,7 +9,7 @@ import NumberInput from "../NumberInput";
 import dayjs, { Dayjs } from "dayjs";
 import CustomCalendar from "../CustomCalendar/CustomCalendar";
 import TotalDays from "../TotalDays/TotalDays";
-import HomeButton from "../HomeButton";
+import CancelButton from "../CancelButton";
 
 import {
   dayjsToDateString,
@@ -152,7 +152,6 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
         setIsOverlappingError(
           "The requested dates overlap with an existing vacation request."
         );
-        // console.log("----isOverlapping");
         isValid = false;
       } else {
         setIsOverlappingError(null);
@@ -235,7 +234,6 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
 
     if (startDate && endDate && vacationDays >= 0) {
       setVacationDays(calculateTotalDays(startDate, endDate));
-      // console.log("startDate && endDate && vacationDays == 0");
     }
   };
 
@@ -362,6 +360,7 @@ const VacationRequestForm: React.FC<VacationRequestFormProps> = ({
         </Grid> */}
 
         <Grid size={12} className={styles.formButtons}>
+          {!requestToEdit && <CancelButton />}
           <Button type="submit" variant="contained" color="primary">
             Submit request
           </Button>

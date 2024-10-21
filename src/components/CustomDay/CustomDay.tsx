@@ -19,18 +19,14 @@ const CustomDay: React.FC<CustomDayProps> = (props) => {
   const isEnd = day.isSame(endDate, "day");
 
   return (
-    //todo: style in file
     <PickersDay
       {...other}
       day={day}
       sx={{
         ...(isInRange && {
-          // backgroundColor: 'rgba(25, 118, 210, 0.5)',
-          // backgroundColor: "#1976d2",
           backgroundColor: "#50C878 !important",
           color: "white",
           "&:hover": {
-            // backgroundColor: 'rgba(25, 118, 210, 0.7)',
             backgroundColor: "#50C878",
           },
         }),

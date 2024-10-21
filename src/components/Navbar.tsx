@@ -8,7 +8,7 @@ import HomeIcon from "@mui/icons-material/Home";
 
 const Navbar: React.FC = () => {
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ backgroundColor: "#0282cb" }}>
       <Toolbar>
         <Typography
           variant="h6"

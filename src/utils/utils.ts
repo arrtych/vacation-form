@@ -1,7 +1,6 @@
 import React, { ReactNode } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { VacationRequest } from "../types/types";
-import { start } from "repl";
 
 /**
  * Converts a Dayjs object to a date string in the format 'MM/DD/YYYY'.
@@ -119,4 +118,26 @@ export const isOverlapping = (
   }
 
   return false;
+};
+
+/**
+ * Check vacation request status
+ * @param request
+ * @returns status as string
+ */
+export const getVacationRequestStatus = (request: VacationRequest): string => {
+  const today = dayjs();
+  const startDate = dayjs(request.startDate);
+  const endDate = dayjs(request.endDate);
+  let status = "";
+  if (startDate.isAfter(today, "day")) {
+    status = "upcoming";
+  } else if (today.isBetween(startDate, endDate, "day", "[]")) {
+    status = "active";
+  } else if (endDate.isBefore(today, "day")) {
+    status = "past";
+  } else {
+    status = "unknown";
+  }
+  return status.toUpperCase();
 };

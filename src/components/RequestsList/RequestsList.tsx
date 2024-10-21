@@ -3,19 +3,25 @@ import React, { useContext, useState } from "react";
 import {
   Box,
   Button,
+  Chip,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { VacationContext } from "../../context/VacationContext";
 import VacationRequestForm from "../VacationRequestForm/VacationRequestForm";
 import dayjs from "dayjs";
-import { calculateTotalDays, formatToFullDate } from "../../utils/utils";
+import {
+  calculateTotalDays,
+  formatToFullDate,
+  getVacationRequestStatus,
+} from "../../utils/utils";
 import styles from "./RequestsList.module.css";
 import CustomModal from "../CustomModal/CustomModal";
 
@@ -31,8 +37,8 @@ const RequestsList: React.FC = () => {
     "End Date",
     "Days Amount",
     "Reason",
-    "",
-    // "",
+    "Status",
+    "Actions",
   ];
 
   const handleRemoveRequest = async (id: number) => {
@@ -61,7 +67,6 @@ const RequestsList: React.FC = () => {
 
   return (
     <Box className={styles.box}>
-      {/* todo: if no request add no-data text */}
       {editingRequest && (
         <>
           <CustomModal
@@ -95,59 +100,68 @@ const RequestsList: React.FC = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {vacationRequests.map((request, idx) => (
-              <TableRow
-                key={request.id}
-                sx={{
-                  "&:hover": {
-                    backgroundColor: "#f5f5f5",
-                    // cursor: "pointer",
-                  },
-                }}
-              >
-                <TableCell key={idx} align="center">
-                  {request.id}
-                </TableCell>
-                <TableCell align="center">
-                  {formatToFullDate(request.startDate)}
-                </TableCell>
-                <TableCell align="center">
-                  {formatToFullDate(request.endDate)}
-                </TableCell>
-                <TableCell align="center">
-                  {getVacationAmount(request.startDate, request.endDate)}
-                </TableCell>
-                <TableCell align="center" className={styles.reason}>
-                  {request.reason}
-                </TableCell>
+            {vacationRequests.map((request, idx) => {
+              const requestStatus = getVacationRequestStatus(request);
+              return (
+                <TableRow
+                  key={request.id}
+                  sx={{
+                    "&:hover": {
+                      backgroundColor: "#f5f5f5",
+                      // cursor: "pointer",
+                    },
+                  }}
+                >
+                  <TableCell key={idx} align="center">
+                    {request.id}
+                  </TableCell>
+                  <TableCell align="center">
+                    {formatToFullDate(request.startDate)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {formatToFullDate(request.endDate)}
+                  </TableCell>
+                  <TableCell align="center">
+                    {getVacationAmount(request.startDate, request.endDate)}
+                  </TableCell>
+                  <TableCell align="center" className={styles.reason}>
+                    {request.reason}
+                  </TableCell>
+                  <TableCell align="center">
+                    <Chip
+                      label={requestStatus}
+                      variant={requestStatus === "PAST" ? "filled" : "outlined"}
+                    />
+                  </TableCell>
 
-                <TableCell align="center">
-                  <div className={styles.actionButtons}>
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="primary"
-                      onClick={() => handleUpdateRequest(request.id)}
-                    >
-                      <EditIcon />
-                    </Button>
+                  <TableCell align="center">
+                    <div className={styles.actionButtons}>
+                      <Tooltip title="Edit" placement="top">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="primary"
+                          onClick={() => handleUpdateRequest(request.id)}
+                        >
+                          <EditIcon />
+                        </Button>
+                      </Tooltip>
 
-                    <Button
-                      type="submit"
-                      variant="contained"
-                      color="error"
-                      onClick={() => handleRemoveRequest(request.id)}
-                    >
-                      <DeleteIcon />
-                    </Button>
-                  </div>
-                </TableCell>
-
-                {/* <TableCell align="center">
-
-                </TableCell> */}
-              </TableRow>
-            ))}
+                      <Tooltip title="Delete" placement="top">
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          color="error"
+                          onClick={() => handleRemoveRequest(request.id)}
+                        >
+                          <DeleteIcon />
+                        </Button>
+                      </Tooltip>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              );
+            })}
           </TableBody>
         </Table>
       </TableContainer>

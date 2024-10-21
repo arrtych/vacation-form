@@ -21,7 +21,6 @@ interface VacationContextProps {
     id: number,
     formData: VacationRequest
   ) => Promise<void>;
-  // userId: number;
 }
 
 interface VacationProviderProps {
@@ -74,10 +73,6 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
       ) {
         throw new Error("Total vacation days exceed available vacation days.");
       } else {
-        // console.log(
-        //   "totalVacationDays < availableVacationDays",
-        //   totalVacationDays
-        // );
         const newRequest = await addVacationRequest(formData);
         setVacationRequests([...vacationRequests, newRequest]);
 
@@ -208,7 +203,6 @@ const VacationContextProvider: React.FC<VacationProviderProps> = ({
         availableVacationDays,
         updateAvailableVacationDays,
         updateVacationRequest: updateRequest,
-        // userId,
       }}
     >
       {children}
